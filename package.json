@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "netlify-cli": "^10.12.1"
+  },
+  "scripts": {
+    "netlify": "netlify"
+  }
+}
+
