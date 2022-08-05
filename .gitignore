@@ -1,1 +1,9 @@
-authtoken
+authtokens
+.netlify
+node_modules
+airtable_test_create_data
+airtable_get_3_records
+airtable_data_.json
+formspark_demo.html
+.vscode
+mock_server

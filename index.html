@@ -1,32 +1,77 @@
+<!-- THE ONLY PAGE -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    
+    <!-- Is bootstrap causing the weird auto refresh bug?? --> 
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./mystyles.css">
+    <script src="./mymainscript.js"></script>
+
+    <title>GPT-3 read and review</title>
 </head>
+
+
+<!-- this was the issue!
+  "The default value of type for a button is submit, which self posts the form in your case and makes it look like a refresh."
+  https://stackoverflow.com/questions/7803814/prevent-refresh-of-page-when-button-inside-form-clicked 
+-->
+
+
 <body>
-    <form name="input_prompt" method="POST" data-netlify="true" action="success_result.html">
-        <p>
-          <label>Query: <input type="text" name="inputquery"/></label>
-        </p>
-        <!-- <p>
-          <label>Your Email: <input type="email" name="email" /></label>
-        </p>
-        <p>
-          <label>Your Role: <select name="role[]" multiple>
-            <option value="leader">Leader</option>
-            <option value="follower">Follower</option>
-          </select></label>
-        </p>
-        <p>
-          <label>Message: <textarea name="message"></textarea></label>
-        </p> -->
-        <p>
-          <button type="submit">Send</button>
-        </p>
-      </form>
+
+  <!-- Query form -->
+    <form name="input_prompt" method=POST" id="form1" action="">
+      <div class="container">
+        <label for="text1">What is your question to philosopher?</label>
+        <input type="text" class="form-control" id="text1">
+        <button name="submit1" type="button" onclick="button1_function()">Submit question</button>
+      </div>
+    </form>
+
+    <div class="container responsetext">
+      <p id="changedWithJS"> </p>
+    </div>
+
+    
+
+    <div class="container" id="hidden1">
+      <div class="container separator1">
+        <h4>
+          Please rate the response below.
+        </h4>
+      </div>
+
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-10 col-md-8 col-lg-6">
+              <form>
+                <p>
+                    <label>E-mail id: <input type="email" name="user_email"/></label>
+
+                    <label>How much wisdom did you encounter in the response?
+                      <input type="range" name="user_rating1" min="0" max="10">
+                    </label>
+                    <label>How thought provoking or intellectually stimulating was the response?
+                      <input type="range" name="user_rating2" min="0" max="10">
+                    </label>
+                    <label>How much did you enjoy reading the response?
+                      <input type="range" name="user_rating3" min="0" max="10">
+                    </label>
+                    <label>How likely is the response from a human philosopher (as opposed to a computer software)?
+                      <input type="range" name="user_rating4" min="0" max="10">
+                    </label>
+                </p>
+
+              <button name="submit2" type="button" onclick="button2_function()">Save responses</button>
+              </form>
+            </div>
+          </div>
+    </div>
+
       
 </body>
 </html>
