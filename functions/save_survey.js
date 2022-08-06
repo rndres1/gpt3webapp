@@ -4,11 +4,19 @@ Need a whole backend (Netlify function) function only to hide the Airtable auth 
 
 var Airtable = require('airtable');
 
-var APIKEY = process.env.AIRTABLE_AUTH_TOKEN //AIRTABLE_AUTH_TOKEN is in environment manually inserted
-var base = new Airtable({apiKey: APIKEY}).base('appV38xkLiMA1qeeY');
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 
 exports.handler = async event => {
+
+  var APIKEY = process.env.AIRTABLE_AUTH_TOKEN //AIRTABLE_AUTH_TOKEN is in environment manually inserted
+  var base = await new Airtable({apiKey: APIKEY}).base('appV38xkLiMA1qeeY'); // await added to ensure no timeout
+  var table = await base('respData');
+
     // https://stackoverflow.com/a/72026511
     if (event.httpMethod !== 'POST') {
         return {
@@ -51,7 +59,7 @@ exports.handler = async event => {
 
     console.log(newData);
 
-    base('respData').create(newData, {typecast: true}, function(err, records) {
+    await table.create(newData, {typecast: true}, function(err, records) {
         if (err) {
           console.error(err);
           return;
@@ -61,6 +69,13 @@ exports.handler = async event => {
         });
       });
 
+
+    // modern problems require modern solutions
+    // if the reason Airtable API calls are failing is because of function timeout (despite await before each call)
+    // perhaps forcing the thread to sleep will work?
+    console.log("going to sleep");
+    await sleep(1900); // milliseconds
+    console.log("finished sleeping");
 
     // not going to check this in frontend
     return {
