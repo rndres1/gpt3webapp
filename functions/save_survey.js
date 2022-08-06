@@ -4,7 +4,7 @@ Need a whole backend (Netlify function) function only to hide the Airtable auth 
 
 var Airtable = require('airtable');
 
-var APIKEY = process.env.AIRTABLE_AUTH_TOKEN
+var APIKEY = process.env.AIRTABLE_AUTH_TOKEN //AIRTABLE_AUTH_TOKEN is in environment manually inserted
 var base = new Airtable({apiKey: APIKEY}).base('appV38xkLiMA1qeeY');
 
 
@@ -43,7 +43,7 @@ exports.handler = async event => {
             "Rating2": body.rating2,
             "Rating3": body.rating3,
             "Rating4": body.rating4,
-            "IPaddress": "192.168.0.1",
+            "IPaddress": `${event.headers['client-ip']}`,
             "UserAgent": body.useragent,
             "timestamp": timestamp
           }
