@@ -1,29 +1,18 @@
-/* netlify function, available at BASE_URL/api/get_text_openAI  or at BASE_URL/.netlify/functions/get_text_openAI
-edit netlify.toml to set the "nice" routes
-*/
-
-const axios = require('axios');
-//const fs = require('fs');
-
+/* netlify function, available at BASE_URL/api/get_text_openAI  or at BASE_URL/.netlify/functions/get_text_openAI ... edit netlify.toml to set the "nice" routes */
 
 const { Configuration, OpenAIApi } = require("openai");
-
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-  });
+});
 
-
-
-const API_URL_TEST = "http://localhost:8080"  // fake openAI API server -- returns canned response
-// const API_URL_TEST = req.get('host') + ":8080";
-
+// const axios = require('axios');
 const p_modelname = "davinci:ft-playpower-labs:remaining-plato-2022-07-25-12-58-51";
-const p_temperature = "0.55";
-const p_maxtokens = "350";
-const API_URL = "https://api.openai.com/v1/completions";
-
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
+const p_temperature = 0.75;
+const p_maxtokens = 150;
+// const API_URL = "https://api.openai.com/v1/completions";
+// const API_URL_TEST = "http://localhost:8080"  // fake openAI API server -- returns canned response. run mock_server
+// const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// }
 
 exports.handler = async event => {
     // https://stackoverflow.com/a/72026511
@@ -38,9 +27,9 @@ exports.handler = async event => {
         var body = JSON.parse(event.body); 
         var user_query = body.query; // the "query" field is defined in frontent
     }
-    
-    call_object = {
-        url: API_URL, 
+    /* //if (~TRUEAPI) {
+        call_object = {
+        url: API_URL,  // API_URL or API_URL_TEST
         method: 'POST', 
         headers: {"Authorization" : `Bearer ${OPENAI_API_KEY}`},
         params: {
@@ -48,17 +37,14 @@ exports.handler = async event => {
             temperature: p_temperature, 
             max_tokens: p_maxtokens, 
             model: p_modelname, 
-            stop: "####"}
+            stop: "####"},
         };
-    //console.log(call_object);
-    //var api_response = await axios(call_object); // ERROR THROWN HERE -- TypeError: Cannot read properties of undefined (reading 'join')
-    //console.log(api_response);
-
-    //console.log("REACHED after API CALL")
-
-    //console.log(api_response.data.choices[0].text); // took almost 2 hours to figure this out!
-    //fs.writeFile("API_response_1.json", JSON.stringify(api_response.data), 'utf-8', function (err) {});
+        console.log(call_object);
+        var api_response = await axios(call_object); // ERROR THROWN HERE -- TypeError: Cannot read properties of undefined (reading 'join')
+        //console.log(api_response.data.choices[0].text); // took almost 2 hours to figure this out!
+    // } */
     
+    // Uncomment the API call when everything else is ready
     
     const openai = new OpenAIApi(configuration);
     var api_response = await openai.createCompletion({
@@ -68,18 +54,10 @@ exports.handler = async event => {
         temperature: p_temperature,
         stop: "####",
     });
-    
-
+    console.log(api_response.data.choices[0].text);    
     return {
         statusCode: 200,
         body: api_response.data.choices[0].text
+        // body: "API response to be populated here" // for development during the Airtable stuff
     }
 }
-
-// retstr = "Your question was \"" + body.query + "\". OpenAI response to be populated here. A joke follows:\n"
-/*
-    return {
-        statusCode: 200,
-        body: retstr,
-    }
-*/

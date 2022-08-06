@@ -13,7 +13,7 @@ function button1_function() {
     document.getElementById("hidden1").style.display = "inline";
     
     //send query to BASE_URL/.netlify/functions/
-    api_url = window.location.origin + "/.netlify/functions//get_text_openAI"    
+    api_url = window.location.origin + "/.netlify/functions/get_text_openAI";
     let xhr = new XMLHttpRequest();
     xhr.open("POST", api_url, true); // true indicates it should be synchronous function
     xhr.setRequestHeader("Accept", "application/json");
@@ -38,6 +38,28 @@ tasks
 */
 
 function button2_function() {
-  alert("button2 clicked")
+  //alert("button2 clicked")
+  api_url = window.location.origin + "/.netlify/functions/save_survey";
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", api_url, true); // true indicates it should be synchronous function
+  xhr.setRequestHeader("Accept", "application/json");
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.onload = function() {
+    window.location.href = "./thankyou.html";
+  }; // nothing to do with the response value of "OK"
+  
+  //ipaddress = 
+
+  let POSTdata = `{"user_email": "${document.getElementById("user_email").value}",
+                    "rating1": "${document.getElementById("user_rating1").value}",
+                    "rating2": "${document.getElementById("user_rating2").value}",
+                    "rating3": "${document.getElementById("user_rating3").value}",
+                    "rating4": "${document.getElementById("user_rating4").value}",
+                    "GPT3_text": "${document.getElementById("changedWithJS").innerHTML}",
+                    "query": "${document.getElementById("text1").value}",
+                    "useragent": "${navigator.userAgent}"
+                  }`
+
+  xhr.send(POSTdata)
 
 }
